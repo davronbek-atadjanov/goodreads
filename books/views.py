@@ -12,6 +12,7 @@ class BooksView(View):
         }
         return render(request, "books/list.html", context)
 
+
 class BookDetailView(View):
     def get(self, request, id):
         book = Book.objects.get(id=id)
@@ -19,3 +20,6 @@ class BookDetailView(View):
             "book": book
         }
         return render(request, "books/detail.html", context)
+
+
+
