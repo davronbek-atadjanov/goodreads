@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Book list</title>
-</head>
-<body>
-{% if messages %}
-
-    {% for message in messages %}
-        <span class="{{ message.tags }}">{{ message }}</span>
-    {% endfor %}
->
-{% endif %}
+{% extends "base.html" %}
+{% block title %}Book list{% endblock %}
 
 
+{% block content %}
 <h1>Books</h1>
 
 {% if books %}
@@ -27,6 +16,4 @@
 {% else %}
     No books found.
 {% endif %}
-
-</body>
-</html>
+{% endblock %}
