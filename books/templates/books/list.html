@@ -5,8 +5,16 @@
     <title>Book list</title>
 </head>
 <body>
-<h1>Books</h1>
+{% if messages %}
 
+    {% for message in messages %}
+        <span class="{{ message.tags }}">{{ message }}</span>
+    {% endfor %}
+>
+{% endif %}
+
+
+<h1>Books</h1>
 
 {% if books %}
 <ul>
