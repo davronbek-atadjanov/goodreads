@@ -1,12 +1,18 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
 {% block title %} Profile Edit{% endblock %}
 
 {% block content %}
 
 <h3>Profile Edit Page</h3>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update</button>
-    </form>
+    <div class="row">
+        <div class="col-4">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

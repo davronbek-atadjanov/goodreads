@@ -1,5 +1,10 @@
-img {
+.profile-pic {
     width:250px;
     height: 250px;
     border-radius:50%;
+}
+
+.cover-picture {
+    width:300px;
+    height:300px;
 }
