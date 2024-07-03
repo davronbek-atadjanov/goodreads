@@ -8,7 +8,7 @@ class BookAdmin(admin.ModelAdmin):
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'email')
+    list_display = ('full_name', 'email')
     search_fields = ('first_name', 'email')
 
 

@@ -4,13 +4,31 @@
 
 {% block content %}
 
-<h3>{{ book.title }}</h3>
+<div class="container mt-5">
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="{{ book.cover_picture.url }}" class="card-img" alt="Book cover">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.description }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Author(s):
+                            {% for book_author in authors %}
+                                {{ book_author.author.first_name }} {{ book_author.author.last_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </small>
+                    </p>
+                    <p class="card-text"><small class="text-muted">Published: {{ book.created_time | date:"M d, Y"}}</small></p>
+                    <p class="card-text"><small class="text-muted">ISBN: {{ book.isbn }}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<img alt="cover image" src="{{ book.cover_picture.url }}" class="cover-picture">
-
-
-    <p>
-    {{ book.description }}
-</p>
 
 {% endblock %}

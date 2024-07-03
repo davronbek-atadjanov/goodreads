@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-
+from django.utils import timezone
 from users.models import CustomUser
 
 
@@ -9,11 +9,15 @@ class Book(models.Model):
     description = models.TextField()
     isbn = models.CharField(max_length=17)
     cover_picture = models.ImageField(default="cover_picture.png")
-
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
 
-
+    def save(self, *args, **kwargs):
+        if not self.created_time:
+            self.created_time = timezone.now()
+        super().save(*args, **kwargs)
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -22,6 +26,10 @@ class Author(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
 class BookAuthor(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)

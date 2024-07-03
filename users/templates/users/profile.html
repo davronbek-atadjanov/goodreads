@@ -4,13 +4,30 @@
 
 {% block content %}
 
-<h1> Profile Page </h1>
-<img alt="Profile picture" src="{{ user.profile_picture.url }}" class="d-flex profile-pic">
-<a href="{% url "users:profile_edit" %}">edit profile</a>
+<h1> Profile  </h1>
+    <div class="image d-flex flex-column justify-content-center align-items-center">
+        <button class="btn btn-secondary">
+            <img src="{{ user.profile_picture.url }}" height="100" width="100">
+        </button>
+        <span class="name mt-3">{{ user.first_name }} {{ user.last_name }}</span>
+        <span class="idd">@{{ user.username }}</span>
+        <span class="idd">{{ user.email }}</span>
+        <div class="d-flex mt-2"><a class="btn btn-dark" href="{% url "users:profile_edit" %}">edit profile</a></div>
+        <div class="px-2 rounded mt-4 data"><span class="join">Joined: {{ user.date_joined | date:"M d, Y" }}</span></div>
+    </div>
 
-<p>Username: {{ user.username }}</p>
-<p>First name: {{ user.first_name }}</p>
-<p>Last name: {{ user.last_name }}</p>
-<p>Email: {{ user.email }}</p>
 
-{% endblock %}s
+
+
+
+
+
+    {#<img alt="Profile picture" src="{{ user.profile_picture.url }}" class="d-flex profile-pic">#}
+{#<a href="{% url "users:profile_edit" %}">edit profile</a>#}
+{##}
+{#<p>Username: {{ user.username }}</p>#}
+{#<p>First name: {{ user.first_name }}</p>#}
+{#<p>Last name: {{ user.last_name }}</p>#}
+{#<p>Email: {{ user.email }}</p>#}
+
+{% endblock %}
