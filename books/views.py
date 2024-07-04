@@ -1,9 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
 
-from books.models import Book, BookAuthor
+from books.forms import BookReviewForm
+from books.models import Book, BookAuthor, BookReview
 
 
 # class BooksView(ListView):
@@ -30,21 +33,42 @@ class BooksView(View):
         }
         return render(request, "books/list.html", context)
 
-class BookDetailView(DetailView):
-    template_name = "books/detail.html"
-    pk_url_kwarg = "id"
-    model = Book
+# class BookDetailView(DetailView):
+#     template_name = "books/detail.html"
+#     pk_url_kwarg = "id"
+#     model = Book
 
 
 class BookDetailView(View):
     def get(self, request, id):
         book = Book.objects.get(id=id)
         authors = BookAuthor.objects.filter(book=book).select_related('author')
+        review_form = BookReviewForm()
         context = {
             "book": book,
-            "authors": authors
+            "authors": authors,
+            "review_form": review_form
         }
         return render(request, "books/detail.html", context)
 
 
+class AddReviewView(LoginRequiredMixin ,View):
+    def post(self, request, id):
+        book = Book.objects.get(id=id)
+        review_form = BookReviewForm(data=request.POST)
+        authors = BookAuthor.objects.filter(book=book).select_related('author')
+        if review_form.is_valid():
+            BookReview.objects.create(
+                book=book,
+                user=request.user,
+                stars_given=review_form.cleaned_data['stars_given'],
+                comment=review_form.cleaned_data['comment']
 
+            )
+            return redirect(reverse("books:detail", kwargs={"id": book.id}))
+        context = {
+            "book": book,
+            "authors": authors,
+            "review_form": review_form
+        }
+        return render(request, "books/detail.html", context)
