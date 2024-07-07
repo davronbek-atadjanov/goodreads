@@ -56,7 +56,6 @@ class AddReviewView(LoginRequiredMixin ,View):
     def post(self, request, id):
         book = Book.objects.get(id=id)
         review_form = BookReviewForm(data=request.POST)
-        authors = BookAuthor.objects.filter(book=book).select_related('author')
         if review_form.is_valid():
             BookReview.objects.create(
                 book=book,
@@ -68,7 +67,6 @@ class AddReviewView(LoginRequiredMixin ,View):
             return redirect(reverse("books:detail", kwargs={"id": book.id}))
         context = {
             "book": book,
-            "authors": authors,
             "review_form": review_form
         }
         return render(request, "books/detail.html", context)

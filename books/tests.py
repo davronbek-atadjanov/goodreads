@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from books.models import Book
+from users.models import CustomUser
 
 
 class BooksTestCase(TestCase):
@@ -56,3 +57,32 @@ class BooksTestCase(TestCase):
         self.assertNotContains(response, book2.title)
         self.assertContains(response, book3.title)
 
+class BookReviewTestCase(TestCase):
+
+    def setUp(self):
+        self.book = Book.objects.create(title="Book1", description="Description1", isbn="134324242")
+        self.user = CustomUser.objects.create(username="Davronbek")
+        self.user.set_password("Hsanov123")
+        self.user.save()
+        self.client.login(username="Davronbek", password="Hsanov123")
+
+    def test_add_review(self):
+        self.client.post(reverse("books:reviews", kwargs={"id": self.book.id}), data={
+            "stars_given": 3,
+            "comment": "Nice book"
+        })
+
+        book_review = self.book.bookreview_set.all()
+        self.assertEqual(book_review.count(), 1)
+        self.assertEqual(book_review[0].comment, "Nice book")
+        self.assertEqual(book_review[0].book, self.book)
+        self.assertEqual(book_review[0].user, self.user)
+
+    def test_add_invalid_review(self):
+        response = self.client.post(reverse("books:reviews", kwargs={"id": self.book.id}), data={
+            "stars_given": 7,
+            "comment": "Nice book"
+        })
+        book_review = self.book.bookreview_set.all()
+        self.assertEqual(book_review.count(), 0)
+        self.assertEqual(response.status_code, 200)
