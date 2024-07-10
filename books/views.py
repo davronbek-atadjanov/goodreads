@@ -28,6 +28,7 @@ class BooksView(View):
 
         page_num = request.GET.get("page", 1)
         page_obj = paginator.get_page(page_num)
+
         context = {
             "page_obj": page_obj,
             "search_query":search_query

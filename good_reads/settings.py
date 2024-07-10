@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     # packages
     "crispy_forms",
     "crispy_bootstrap5",
+    "rest_framework",
 
     # local app
     "books",
-    "users"
+    "users",
+    "api"
 ]
 
 
@@ -153,3 +155,9 @@ EMAIL_HOST_PASSWORD = 'crmszxhmxwjbbvyj'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 CELERY_BROKER_URL = 'amqp://localhost'
+
+# Pagination setting
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2
+}
